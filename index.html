@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResearchHub - Multi-Agent Research Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-view="welcome">
+<div class="aurora a1"></div><div class="aurora a2"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="ring" id="ring" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="logo" href="#" id="logo"><span class="mark"></span>ResearchHub</a>
+  <nav><a href="#" id="navSearch">Search</a><a href="#" id="navResults" hidden>Papers</a><a href="#" id="navLib">Library (0)</a><button type="button" id="themeBtn" class="themebtn">Light mode</button></nav>
+</header>
+
+<main>
+  <!-- PAGE 1: welcome (goes to the search page by itself, or on click) -->
+  <section class="view active" id="v-welcome">
+    <div class="welcome">
+      <p class="hello">Welcome to</p>
+      <h1 class="big">RESEARCH-HUB</h1>
+      <p class="sub">Three AI agents find, read and explain real research papers.</p>
+      <div class="loadbar"><i></i></div>
+      <p class="hint">Click anywhere to start</p>
+    </div>
+  </section>
+
+  <!-- PAGE 2: search -->
+  <section class="view" id="v-search">
+    <div class="hero">
+      <div class="tag">papers &middot; analysis &middot; reports</div>
+      <h2 class="ask">What do you want to research?</h2>
+      <p class="prompt">&gt; <span id="typed"></span><i class="caret"></i></p>
+      <form id="searchForm" class="searchbox">
+        <input id="q" type="text" placeholder="e.g. How does machine learning detect crop disease?" required>
+        <button id="go" type="submit">Search</button>
+      </form>
+      <div class="filters" id="filters" role="group" aria-label="Research category"></div>
+      <div class="options">
+        <label>Papers from <select id="years"><option value="0">any year</option><option value="3">last 3 years</option><option value="5">last 5 years</option><option value="10">last 10 years</option></select></label>
+        <label>Sort by <select id="sort"><option value="relevance">best match</option><option value="citations">most cited</option><option value="newest">newest</option></select></label>
+      </div>
+      <div class="recent" id="recent"></div>
+    </div>
+  </section>
+
+  <!-- PAGE 3: the three agents working -->
+  <section class="view" id="v-run">
+    <div class="block">
+      <h2>Agents are working on: <span id="runQuery" class="q"></span></h2>
+      <div class="flow" id="flow"></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <p id="notice" role="status"></p>
+      <div class="term"><div class="termbar"><b></b><b></b><b></b><span>agent.log</span></div><pre id="termLog">Waiting for a search...</pre></div>
+      <div class="actions" id="runActions" hidden>
+        <button type="button" class="btn small" id="backBtn">Back to search</button>
+        <button type="button" class="btn small ghost" id="seeBtn" hidden>See the papers found</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4: results -->
+  <section class="view" id="v-results">
+    <section id="results" class="block reveal" hidden>
+      <div class="resultsbar"><h2>Ranked papers</h2><div class="actions" style="margin:0"><button type="button" class="btn small" id="cmpBtn" disabled>Compare selected (0)</button><button type="button" class="btn small ghost" id="newBtn">New search</button></div></div>
+      <div id="papers"></div>
+    </section>
+
+    <section id="insights" class="block reveal" hidden>
+      <h2>Summary</h2>
+      <div class="panel" id="summary"></div>
+      <h3>Related topics</h3>
+      <div class="chips" id="related"></div>
+      <h2>Paper comparison</h2>
+      <div class="panel" id="comparison"></div>
+      <button id="reportBtn" class="btn">Download report (PDF)</button> <button id="reportTxtBtn" class="btn ghost">Download as text</button>
+      <span id="reportMsg" class="muted"></span>
+    </section>
+
+    <section id="chat" class="block reveal" hidden>
+      <h2>Ask about these papers</h2>
+      <div class="panel">
+        <div id="log" class="log"></div>
+        <form id="chatForm" class="searchbox small">
+          <input id="chatInput" type="text" placeholder="Ask a question about the retrieved papers..." required>
+          <button type="submit">Ask</button>
+        </form>
+      </div>
+    </section>
+  </section>
+
+  <!-- LIBRARY -->
+  <section class="view" id="v-library">
+    <div class="block">
+      <div class="resultsbar"><h2>My Library</h2><button type="button" class="btn small" id="libBack">Back to search</button></div>
+      <p id="libInfo" class="muted" style="margin:0 0 16px"></p>
+      <div id="libList"></div>
+    </div>
+  </section>
+</main>
+
+<footer><p>ResearchHub &copy; <span id="year"></span>. Answers come from paper abstracts and can miss details. Check the full paper.</p></footer>
+
+<div class="opening" id="opening" data-kind="web" aria-hidden="true"><div class="doc"></div><p id="openingText"></p><p id="openingHost" class="host"></p><div class="pbar"><i></i></div><a id="openingLink" class="btn small" target="_blank" rel="noopener" hidden>Click here if it did not open</a></div>
+<div class="ticker" aria-hidden="true"><div id="tickTrack"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
